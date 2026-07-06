@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
     QTreeWidgetItem,
 )
 
-from gui.plot_widget import PlotWidget
+from gui.plot_area import PlotArea
 
 
 class MainWindow(QMainWindow):
@@ -53,11 +53,11 @@ class MainWindow(QMainWindow):
 
         self.channel_tree.setHeaderLabel("Каналы")
 
-        self.plot = PlotWidget()
+        self.plot_area = PlotArea()
 
         splitter.addWidget(self.channel_tree)
 
-        splitter.addWidget(self.plot)
+        splitter.addWidget(self.plot_area)
 
         splitter.setStretchFactor(1, 1)
 

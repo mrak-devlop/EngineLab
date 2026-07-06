@@ -2,6 +2,7 @@ from pathlib import Path
 
 from PySide6.QtWidgets import QFileDialog
 
+from gui.plot_manager import PlotManager
 from parsers.nissan_datascan import NissanDataScanParser
 
 
@@ -9,6 +10,8 @@ class MainController:
     def __init__(self, window):
 
         self.window = window
+
+        self.plot_manager = PlotManager(window.plot_area)
 
         self.window.open_action.triggered.connect(self.open_log)
 
@@ -27,6 +30,8 @@ class MainController:
 
         self.window.set_session(session)
 
+        self.plot_manager.clear()
+
     def channel_selected(self):
 
         if self.window.session is None:
@@ -37,12 +42,7 @@ class MainController:
         if item is None:
             return
 
-        name = item.text(0)
-
-        channel = self.window.session[name]
-
-        self.window.plot.plot_channel(
-            self.window.session.timestamps,
-            channel.values,
-            channel.name,
+        self.plot_manager.show_channel(
+            self.window.session,
+            item.text(0),
         )

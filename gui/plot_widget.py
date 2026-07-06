@@ -1,9 +1,11 @@
 import pyqtgraph as pg
 from PySide6.QtWidgets import QVBoxLayout, QWidget
 
+from models.channel import Channel
+
 
 class PlotWidget(QWidget):
-    """Обертка над PyQtGraph."""
+    """Виджет одного графика."""
 
     def __init__(self):
         super().__init__()
@@ -11,33 +13,30 @@ class PlotWidget(QWidget):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
 
-        self.graph = pg.PlotWidget()
+        self.plot = pg.PlotWidget()
 
-        self.graph.showGrid(x=True, y=True)
+        self.plot.showGrid(x=True, y=True)
 
-        self.graph.setBackground("w")
+        self.plot.setBackground("w")
 
-        self.graph.addLegend()
-
-        layout.addWidget(self.graph)
+        layout.addWidget(self.plot)
 
     def clear(self):
 
-        self.graph.clear()
+        self.plot.clear()
 
-    def plot_channel(self, x, y, name):
+    def show_channel(self, timestamps, channel: Channel):
 
-        self.graph.clear()
+        self.plot.clear()
 
-        self.graph.plot(
-            x,
-            y,
+        self.plot.plot(
+            timestamps,
+            channel.values,
             pen=pg.mkPen(width=2),
-            name=name,
         )
 
-        self.graph.setTitle(name)
+        self.plot.setTitle(channel.name)
 
-        self.graph.setLabel("bottom", "Time")
+        self.plot.setLabel("left", channel.name)
 
-        self.graph.setLabel("left", name)
+        self.plot.setLabel("bottom", "Time")
