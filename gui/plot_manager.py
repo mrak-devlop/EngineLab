@@ -6,13 +6,13 @@ class PlotManager:
 
         self.plot_area = plot_area
 
-        # имя канала -> PlotWidget
+        # channel.name -> PlotWidget
         self.plots = {}
 
     def show_channel(self, timestamps, channel):
 
         if channel.name in self.plots:
-            return
+            return self.plots[channel.name]
 
         plot = PlotWidget()
 
@@ -24,6 +24,8 @@ class PlotManager:
         self.plot_area.add_plot(plot)
 
         self.plots[channel.name] = plot
+
+        return plot
 
     def hide_channel(self, channel):
 

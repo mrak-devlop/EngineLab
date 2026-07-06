@@ -51,3 +51,16 @@ class ChannelTree(QTreeWidget):
                 0,
                 Qt.Unchecked,
             )
+
+    def set_channel_checked(self, channel_name: str, checked: bool):
+        root = self.invisibleRootItem()
+
+        for i in range(root.childCount()):
+            item = root.child(i)
+
+            if item.text(0) == channel_name:
+                item.setCheckState(
+                    0,
+                    Qt.Checked if checked else Qt.Unchecked,
+                )
+                return
