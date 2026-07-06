@@ -21,3 +21,9 @@ class Session:
 
     def get_channel(self, name: str) -> Channel | None:
         return self.channels.get(name)
+
+    def __getitem__(self, name: str):
+        return self.channels[name]
+
+    def __contains__(self, name: str):
+        return name in self.channels

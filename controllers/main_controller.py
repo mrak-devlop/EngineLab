@@ -1,34 +1,24 @@
 from pathlib import Path
 
-from PySide6.QtWidgets import QFileDialog, QTreeWidgetItem
+from PySide6.QtWidgets import QFileDialog
 
 from parsers.nissan_datascan import NissanDataScanParser
 
 
 class MainController:
     def __init__(self, window):
-        self.window = window
 
-        print("MainController initialized")
+        self.window = window
 
         self.window.open_action.triggered.connect(self.open_log)
 
-        print("Signal connected")
+        self.window.channel_tree.itemSelectionChanged.connect(self.channel_selected)
 
     def open_log(self):
-        print("open_log()")
 
-        filename, _ = QFileDialog.getOpenFileName(
-            parent=self.window,
-            caption="Открыть лог",
-            dir=".",
-            filter="Log files (*.log);;All files (*.*)",
-        )
-
-        print(f"Selected file: {filename}")
+        filename, _ = QFileDialog.getOpenFileName(self.window, "Открыть лог", ".", "Log (*.log)")
 
         if not filename:
-            print("Файл не выбран")
             return
 
         parser = NissanDataScanParser()
@@ -37,10 +27,22 @@ class MainController:
 
         self.window.set_session(session)
 
-    # Пока оставляем здесь
-    def fill_channels(self):
-        self.window.channel_tree.clear()
+    def channel_selected(self):
 
-        for channel in self.window.session.channels.values():
-            item = QTreeWidgetItem([channel.name])
-            self.window.channel_tree.addTopLevelItem(item)
+        if self.window.session is None:
+            return
+
+        item = self.window.channel_tree.currentItem()
+
+        if item is None:
+            return
+
+        name = item.text(0)
+
+        channel = self.window.session[name]
+
+        self.window.plot.plot_channel(
+            self.window.session.timestamps,
+            channel.values,
+            channel.name,
+        )
