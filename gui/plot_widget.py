@@ -15,9 +15,26 @@ class PlotWidget(QWidget):
 
         self.plot = pg.PlotWidget()
 
+        self.plot.setMouseEnabled(
+            x=True,
+            y=False,
+        )
+
+        self.plot.showGrid(
+            x=True,
+            y=True,
+            alpha=0.3,
+        )
+
+        self.plot.setMenuEnabled(False)
+
         self.plot.showGrid(x=True, y=True)
 
         self.plot.setBackground("w")
+
+        self.setMinimumHeight(180)
+
+        self.setMaximumHeight(220)
 
         layout.addWidget(self.plot)
 

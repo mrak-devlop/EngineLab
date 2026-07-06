@@ -39,3 +39,9 @@ class PlotArea(QScrollArea):
 
             if widget is not None:
                 widget.deleteLater()
+
+    def remove_plot(self, plot):
+        self.layout.removeWidget(plot)
+
+        plot.setParent(None)
+        plot.deleteLater()

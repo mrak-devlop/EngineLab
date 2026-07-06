@@ -6,25 +6,37 @@ class PlotManager:
 
         self.plot_area = plot_area
 
-    def show_channel(
-        self,
-        session,
-        channel_name,
-    ):
+        # имя канала -> PlotWidget
+        self.plots = {}
 
-        self.clear()
+    def show_channel(self, timestamps, channel):
 
-        channel = session[channel_name]
+        if channel.name in self.plots:
+            return
 
         plot = PlotWidget()
 
         plot.show_channel(
-            session.timestamps,
+            timestamps,
             channel,
         )
 
         self.plot_area.add_plot(plot)
 
+        self.plots[channel.name] = plot
+
+    def hide_channel(self, channel):
+
+        plot = self.plots.pop(channel.name, None)
+
+        if plot is None:
+            return
+
+        self.plot_area.remove_plot(plot)
+
     def clear(self):
 
-        self.plot_area.clear()
+        for plot in list(self.plots.values()):
+            self.plot_area.remove_plot(plot)
+
+        self.plots.clear()

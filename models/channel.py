@@ -1,12 +1,14 @@
-from dataclasses import dataclass
-
-import numpy as np
-from numpy.typing import NDArray
+from dataclasses import dataclass, field
 
 
 @dataclass(slots=True)
 class Channel:
-    """Один канал логов."""
-
     name: str
-    values: NDArray[np.float64]
+
+    values: list
+
+    unit: str = ""
+
+    color: str = ""
+
+    visible: bool = True
