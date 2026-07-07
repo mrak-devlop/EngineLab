@@ -90,9 +90,6 @@ class PlotManager(QObject):
     def on_cursor_moved(self, source_plot, index):
 
         for plot in self.plots.values():
-            if plot is source_plot:
-                continue
-
             plot.set_cursor(index)
 
         self.cursor_moved.emit(index)

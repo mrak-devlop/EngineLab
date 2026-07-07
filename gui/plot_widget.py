@@ -1,3 +1,4 @@
+import numpy as np
 import pyqtgraph as pg
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import (
@@ -62,9 +63,19 @@ class PlotWidget(QFrame):
             movable=False,
         )
 
+        self.marker = pg.ScatterPlotItem(
+            size=8,
+            pen=pg.mkPen("w"),
+            brush=pg.mkBrush("r"),
+        )
+
+        self.plot.addItem(self.marker)
+
         self.plot.addItem(self.cursor)
 
         self.cursor.hide()
+
+        self.marker.hide()
 
         self.plot.showGrid(
             x=True,
@@ -103,6 +114,8 @@ class PlotWidget(QFrame):
 
         self.timestamps = timestamps
 
+        self.values = channel.values
+
         self.title.setText(channel.name)
 
         self.plot.clear()
@@ -124,6 +137,7 @@ class PlotWidget(QFrame):
         )
 
         self.plot.addItem(self.cursor)
+        self.plot.addItem(self.marker)
 
     def on_close(self):
 
@@ -146,23 +160,26 @@ class PlotWidget(QFrame):
             index,
         )
 
-        self.cursor.setValue(view_pos.x())
-
-        self.cursor.show()
-
     def find_nearest_index(self, timestamps, x):
 
-        nearest = 0
-        best_distance = float("inf")
+        index = np.searchsorted(
+            timestamps,
+            x,
+        )
 
-        for i, t in enumerate(timestamps):
-            distance = abs(t - x)
+        if index <= 0:
+            return 0
 
-            if distance < best_distance:
-                best_distance = distance
-                nearest = i
+        if index >= len(timestamps):
+            return len(timestamps) - 1
 
-        return nearest
+        left = timestamps[index - 1]
+        right = timestamps[index]
+
+        if abs(x - left) <= abs(right - x):
+            return index - 1
+
+        return index
 
     def set_cursor(self, index: int):
 
@@ -172,9 +189,17 @@ class PlotWidget(QFrame):
         if index < 0 or index >= len(self.timestamps):
             return
 
-        self.cursor.setValue(self.timestamps[index])
+        x = self.timestamps[index]
+        y = self.values[index]
 
+        self.cursor.setValue(x)
         self.cursor.show()
+
+        self.marker.setData(
+            pos=[(x, y)],
+        )
+
+        self.marker.show()
 
     def x_range_changed(self, view_box, x_range):
 
