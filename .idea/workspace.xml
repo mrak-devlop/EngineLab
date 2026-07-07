@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbb4bcbe-2085-4601-933b-38c8c8d29f0f" name="Changes" comment="v0.3.2">
+    <list default="true" id="dbb4bcbe-2085-4601-933b-38c8c8d29f0f" name="Changes" comment="v0.3.">
+      <change afterPath="$PROJECT_DIR$/gui/info_panel.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/main_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/main_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/channel_tree.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/channel_tree.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/main_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/plot_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/plot_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +50,7 @@
     &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main_window.executor&quot;: &quot;Run&quot;,
     &quot;Python.session.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
@@ -93,7 +96,8 @@
       <workItem from="1783206535453" duration="652000" />
       <workItem from="1783245317436" duration="2952000" />
       <workItem from="1783350166769" duration="5970000" />
-      <workItem from="1783370069681" duration="7449000" />
+      <workItem from="1783370069681" duration="10307000" />
+      <workItem from="1783401107118" duration="1685000" />
     </task>
     <task id="LOCAL-00001" summary="v0.2.0">
       <option name="closed" value="true" />
@@ -135,7 +139,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783375730823</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="v0.3.">
+      <option name="closed" value="true" />
+      <created>1783378035977</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1783378035977</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -158,10 +170,12 @@
     <MESSAGE value="v0.3.0" />
     <MESSAGE value="v0.3.1" />
     <MESSAGE value="v0.3.2" />
-    <option name="LAST_COMMIT_MESSAGE" value="v0.3.2" />
+    <MESSAGE value="v0.3." />
+    <option name="LAST_COMMIT_MESSAGE" value="v0.3." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/EngineLab$session.coverage" NAME="session Coverage Results" MODIFIED="1783355649578" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
-    <SUITE FILE_PATH="coverage/EngineLab$main.coverage" NAME="main Coverage Results" MODIFIED="1783377854614" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/EngineLab$main.coverage" NAME="main Coverage Results" MODIFIED="1783402352821" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/EngineLab$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1783379531822" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui" />
   </component>
 </project>

@@ -12,11 +12,25 @@ class MainController:
 
         self.window = window
 
-        self.plot_manager = PlotManager(window.plot_area)
+        self.plot_manager = PlotManager(
+            window.plot_area,
+        )
 
-        self.window.open_action.triggered.connect(self.open_log)
+        #
+        # Сигналы
+        #
 
-        self.window.channel_tree.itemChanged.connect(self.channels_changed)
+        self.window.open_action.triggered.connect(
+            self.open_log,
+        )
+
+        self.window.channel_tree.itemChanged.connect(
+            self.channels_changed,
+        )
+
+        self.plot_manager.plot_closed.connect(
+            self.plot_closed,
+        )
 
     def open_log(self):
 
@@ -49,13 +63,10 @@ class MainController:
             return
 
         if item.checkState(0) == Qt.Checked:
-            plot = self.plot_manager.show_channel(
+            self.plot_manager.show_channel(
                 self.window.session.timestamps,
                 channel,
             )
-
-            if plot is not None:
-                plot.closed.connect(self.plot_closed)
 
         else:
             self.plot_manager.hide_channel(channel)
