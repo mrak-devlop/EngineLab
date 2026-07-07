@@ -32,6 +32,10 @@ class MainController:
             self.plot_closed,
         )
 
+        self.plot_manager.cursor_moved.connect(
+            self.cursor_moved,
+        )
+
     def open_log(self):
 
         filename, _ = QFileDialog.getOpenFileName(
@@ -77,3 +81,18 @@ class MainController:
             channel_name,
             False,
         )
+
+    def cursor_moved(self, index: int):
+
+        session = self.window.session
+
+        if session is None:
+            return
+
+        values = session.values_at(index)
+
+        for channel_name, value in values.items():
+            self.window.info_panel.set_value(
+                channel_name,
+                value,
+            )

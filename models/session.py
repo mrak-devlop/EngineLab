@@ -27,3 +27,12 @@ class Session:
 
     def __contains__(self, name: str):
         return name in self.channels
+
+    def values_at(self, index: int) -> dict[str, float]:
+
+        values = {}
+
+        for channel in self.channels.values():
+            values[channel.name] = channel.values[index]
+
+        return values

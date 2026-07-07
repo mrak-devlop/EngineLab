@@ -5,6 +5,7 @@ from gui.plot_widget import PlotWidget
 
 class PlotManager(QObject):
     plot_closed = Signal(str)
+    cursor_moved = Signal(int)
 
     def __init__(self, plot_area):
 
@@ -22,6 +23,14 @@ class PlotManager(QObject):
 
         plot.closed.connect(
             self.on_plot_closed,
+        )
+
+        plot.cursor_moved.connect(
+            self.on_cursor_moved,
+        )
+
+        plot.view_changed.connect(
+            self.on_view_changed,
         )
 
         plot.show_channel(
@@ -77,3 +86,29 @@ class PlotManager(QObject):
         self.plot_area.remove_plot(plot)
 
         self.plot_closed.emit(channel_name)
+
+    def on_cursor_moved(self, source_plot, index):
+
+        for plot in self.plots.values():
+            if plot is source_plot:
+                continue
+
+            plot.set_cursor(index)
+
+        self.cursor_moved.emit(index)
+
+    def on_view_changed(
+        self,
+        source_plot,
+        x_min: float,
+        x_max: float,
+    ):
+
+        for plot in self.plots.values():
+            if plot is source_plot:
+                continue
+
+            plot.set_x_range(
+                x_min,
+                x_max,
+            )

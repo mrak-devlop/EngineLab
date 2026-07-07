@@ -15,11 +15,14 @@ class PlotWidget(QFrame):
     """Панель одного графика."""
 
     closed = Signal(str)
+    cursor_moved = Signal(object, int)
+    view_changed = Signal(object, float, float)
 
     def __init__(self):
         super().__init__()
 
         self.channel = None
+        self._syncing = False
 
         self.setFrameShape(QFrame.Shape.StyledPanel)
 
@@ -54,6 +57,15 @@ class PlotWidget(QFrame):
 
         self.plot = pg.PlotWidget()
 
+        self.cursor = pg.InfiniteLine(
+            angle=90,
+            movable=False,
+        )
+
+        self.plot.addItem(self.cursor)
+
+        self.cursor.hide()
+
         self.plot.showGrid(
             x=True,
             y=True,
@@ -73,6 +85,14 @@ class PlotWidget(QFrame):
 
         self.close_button.clicked.connect(self.on_close)
 
+        self.plot.scene().sigMouseMoved.connect(
+            self.mouse_moved,
+        )
+
+        self.plot.plotItem.vb.sigXRangeChanged.connect(
+            self.x_range_changed,
+        )
+
     def show_channel(
         self,
         timestamps,
@@ -80,6 +100,8 @@ class PlotWidget(QFrame):
     ):
 
         self.channel = channel
+
+        self.timestamps = timestamps
 
         self.title.setText(channel.name)
 
@@ -101,9 +123,78 @@ class PlotWidget(QFrame):
             "Time",
         )
 
+        self.plot.addItem(self.cursor)
+
     def on_close(self):
 
         if self.channel is None:
             return
 
         self.closed.emit(self.channel.name)
+
+    def mouse_moved(self, pos):
+
+        view_pos = self.plot.plotItem.vb.mapSceneToView(pos)
+
+        index = self.find_nearest_index(
+            self.timestamps,
+            view_pos.x(),
+        )
+
+        self.cursor_moved.emit(
+            self,
+            index,
+        )
+
+        self.cursor.setValue(view_pos.x())
+
+        self.cursor.show()
+
+    def find_nearest_index(self, timestamps, x):
+
+        nearest = 0
+        best_distance = float("inf")
+
+        for i, t in enumerate(timestamps):
+            distance = abs(t - x)
+
+            if distance < best_distance:
+                best_distance = distance
+                nearest = i
+
+        return nearest
+
+    def set_cursor(self, index: int):
+
+        if self.channel is None:
+            return
+
+        if index < 0 or index >= len(self.timestamps):
+            return
+
+        self.cursor.setValue(self.timestamps[index])
+
+        self.cursor.show()
+
+    def x_range_changed(self, view_box, x_range):
+
+        if self._syncing:
+            return
+
+        self.view_changed.emit(
+            self,
+            x_range[0],
+            x_range[1],
+        )
+
+    def set_x_range(self, x_min: float, x_max: float):
+
+        self._syncing = True
+
+        self.plot.setXRange(
+            x_min,
+            x_max,
+            padding=0,
+        )
+
+        self._syncing = False
