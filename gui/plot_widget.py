@@ -58,6 +58,12 @@ class PlotWidget(QFrame):
 
         self.plot = pg.PlotWidget()
 
+        self.curve = self.plot.plot(
+            [],
+            [],
+            pen=pg.mkPen(width=2),
+        )
+
         self.cursor = pg.InfiniteLine(
             angle=90,
             movable=False,
@@ -104,6 +110,8 @@ class PlotWidget(QFrame):
             self.x_range_changed,
         )
 
+        self._last_index = -1
+
     def show_channel(
         self,
         timestamps,
@@ -118,12 +126,9 @@ class PlotWidget(QFrame):
 
         self.title.setText(channel.name)
 
-        self.plot.clear()
-
-        self.plot.plot(
+        self.curve.setData(
             timestamps,
             channel.values,
-            pen=pg.mkPen(width=2),
         )
 
         self.plot.setLabel(
@@ -135,9 +140,6 @@ class PlotWidget(QFrame):
             "bottom",
             "Time",
         )
-
-        self.plot.addItem(self.cursor)
-        self.plot.addItem(self.marker)
 
     def on_close(self):
 
@@ -154,6 +156,11 @@ class PlotWidget(QFrame):
             self.timestamps,
             view_pos.x(),
         )
+
+        if index == self._last_index:
+            return
+
+        self._last_index = index
 
         self.cursor_moved.emit(
             self,
