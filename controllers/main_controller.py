@@ -4,6 +4,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QFileDialog
 
 from gui.plot_manager import PlotManager
+from models.cursor_mode import CursorMode
 from parsers.nissan_datascan import NissanDataScanParser
 
 
@@ -34,6 +35,14 @@ class MainController:
 
         self.plot_manager.cursor_moved.connect(
             self.cursor_moved,
+        )
+
+        self.current_index = -1
+
+        self.cursor_mode = CursorMode.CURSOR
+
+        self.window.cursor_mode_group.buttonClicked.connect(
+            self.on_cursor_mode_changed,
         )
 
     def open_log(self):
@@ -84,6 +93,11 @@ class MainController:
 
     def cursor_moved(self, index: int):
 
+        if index == self.current_index:
+            return
+
+        self.current_index = index
+
         session = self.window.session
 
         if session is None:
@@ -96,3 +110,20 @@ class MainController:
                 channel_name,
                 value,
             )
+
+    def on_cursor_mode_changed(self, button):
+
+        if button is self.window.cursor_radio:
+            self.cursor_mode = CursorMode.CURSOR
+
+        elif button is self.window.marker_a_radio:
+            self.cursor_mode = CursorMode.MARKER_A
+
+        elif button is self.window.marker_b_radio:
+            self.cursor_mode = CursorMode.MARKER_B
+
+        self.plot_manager.set_cursor_mode(
+            self.cursor_mode,
+        )
+
+        print(f"Cursor mode: {self.cursor_mode.name}")

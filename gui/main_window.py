@@ -2,9 +2,14 @@ import pyqtgraph as pg
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import (
+    QButtonGroup,
+    QHBoxLayout,
     QMainWindow,
+    QRadioButton,
     QSplitter,
     QStatusBar,
+    QVBoxLayout,
+    QWidget,
 )
 
 from gui.channel_tree import ChannelTree
@@ -46,14 +51,63 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(splitter)
 
+        #
+        # Левая панель
+        #
+
         self.channel_tree = ChannelTree()
+
+        #
+        # Центральная панель
+        #
 
         self.plot_area = PlotArea()
 
+        plot_container = QWidget()
+
+        plot_layout = QVBoxLayout(plot_container)
+
+        plot_layout.setContentsMargins(0, 0, 0, 0)
+        plot_layout.setSpacing(2)
+
+        #
+        # Панель режимов курсора
+        #
+
+        mode_layout = QHBoxLayout()
+
+        self.cursor_radio = QRadioButton("Cursor")
+        self.marker_a_radio = QRadioButton("Marker A")
+        self.marker_b_radio = QRadioButton("Marker B")
+
+        self.cursor_radio.setChecked(True)
+
+        self.cursor_mode_group = QButtonGroup(self)
+
+        self.cursor_mode_group.addButton(self.cursor_radio)
+        self.cursor_mode_group.addButton(self.marker_a_radio)
+        self.cursor_mode_group.addButton(self.marker_b_radio)
+
+        mode_layout.addWidget(self.cursor_radio)
+        mode_layout.addWidget(self.marker_a_radio)
+        mode_layout.addWidget(self.marker_b_radio)
+        mode_layout.addStretch()
+
+        plot_layout.addLayout(mode_layout)
+        plot_layout.addWidget(self.plot_area)
+
+        #
+        # Правая панель
+        #
+
         self.info_panel = InfoPanel()
 
+        #
+        # Размещаем всё в splitter
+        #
+
         splitter.addWidget(self.channel_tree)
-        splitter.addWidget(self.plot_area)
+        splitter.addWidget(plot_container)
         splitter.addWidget(self.info_panel)
 
         splitter.setStretchFactor(0, 0)

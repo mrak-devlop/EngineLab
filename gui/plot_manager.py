@@ -1,18 +1,25 @@
 from PySide6.QtCore import QObject, Signal
 
 from gui.plot_widget import PlotWidget
+from models.cursor_mode import CursorMode
 
 
 class PlotManager(QObject):
     plot_closed = Signal(str)
     cursor_moved = Signal(int)
+    marker_changed = Signal()
 
     def __init__(self, plot_area):
-
         super().__init__()
 
         self.plot_area = plot_area
         self.plots = {}
+
+        self.cursor_mode = CursorMode.CURSOR
+
+    def set_cursor_mode(self, mode):
+
+        self.cursor_mode = mode
 
     def show_channel(self, timestamps, channel):
 
@@ -21,17 +28,10 @@ class PlotManager(QObject):
 
         plot = PlotWidget()
 
-        plot.closed.connect(
-            self.on_plot_closed,
-        )
-
-        plot.cursor_moved.connect(
-            self.on_cursor_moved,
-        )
-
-        plot.view_changed.connect(
-            self.on_view_changed,
-        )
+        plot.closed.connect(self.on_plot_closed)
+        plot.cursor_moved.connect(self.on_cursor_moved)
+        plot.view_changed.connect(self.on_view_changed)
+        plot.clicked.connect(self.on_plot_clicked)
 
         plot.show_channel(
             timestamps,
@@ -59,22 +59,6 @@ class PlotManager(QObject):
             self.plot_area.remove_plot(plot)
 
         self.plots.clear()
-
-    def on_plot_closed(self, channel_name: str):
-
-        channel = None
-
-        for ch in self.plots.keys():
-            if ch == channel_name:
-                channel = self.plots.pop(ch)
-                break
-
-        if channel is None:
-            return
-
-        self.plot_area.remove_plot(channel)
-
-        self.plot_closed.emit(channel_name)
 
     def on_plot_closed(self, channel_name: str):
 
@@ -109,3 +93,19 @@ class PlotManager(QObject):
                 x_min,
                 x_max,
             )
+
+    def on_plot_clicked(self, source_plot, index):
+
+        match self.cursor_mode:
+            case CursorMode.CURSOR:
+                return
+
+            case CursorMode.MARKER_A:
+                for plot in self.plots.values():
+                    plot.set_marker_a(index)
+
+            case CursorMode.MARKER_B:
+                for plot in self.plots.values():
+                    plot.set_marker_b(index)
+
+        self.marker_changed.emit()
