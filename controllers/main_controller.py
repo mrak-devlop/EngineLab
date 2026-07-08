@@ -37,6 +37,10 @@ class MainController:
             self.cursor_moved,
         )
 
+        self.plot_manager.marker_changed.connect(
+            self.marker_changed,
+        )
+
         self.current_index = -1
 
         self.cursor_mode = CursorMode.CURSOR
@@ -62,6 +66,8 @@ class MainController:
         session = parser.parse(Path(filename))
 
         self.window.set_session(session)
+
+        self.plot_manager.session = session
 
         self.plot_manager.clear()
 
@@ -127,3 +133,9 @@ class MainController:
         )
 
         print(f"Cursor mode: {self.cursor_mode.name}")
+
+    def marker_changed(self, measurements):
+
+        self.window.measurements_panel.set_measurements(
+            measurements,
+        )

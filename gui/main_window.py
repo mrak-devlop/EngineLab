@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (
 
 from gui.channel_tree import ChannelTree
 from gui.info_panel import InfoPanel
+from gui.measurements_panel import MeasurementsPanel
 from gui.plot_area import PlotArea
 
 
@@ -35,21 +36,39 @@ class MainWindow(QMainWindow):
 
         file_menu = menu.addMenu("Файл")
 
-        self.open_action = QAction("Открыть лог...", self)
-        file_menu.addAction(self.open_action)
+        self.open_action = QAction(
+            "Открыть лог...",
+            self,
+        )
+
+        file_menu.addAction(
+            self.open_action,
+        )
 
         file_menu.addSeparator()
 
-        self.exit_action = QAction("Выход", self)
-        file_menu.addAction(self.exit_action)
+        self.exit_action = QAction(
+            "Выход",
+            self,
+        )
 
-        self.exit_action.triggered.connect(self.close)
+        file_menu.addAction(
+            self.exit_action,
+        )
+
+        self.exit_action.triggered.connect(
+            self.close,
+        )
 
     def create_ui(self):
 
-        splitter = QSplitter(Qt.Horizontal)
+        splitter = QSplitter(
+            Qt.Horizontal,
+        )
 
-        self.setCentralWidget(splitter)
+        self.setCentralWidget(
+            splitter,
+        )
 
         #
         # Левая панель
@@ -65,10 +84,20 @@ class MainWindow(QMainWindow):
 
         plot_container = QWidget()
 
-        plot_layout = QVBoxLayout(plot_container)
+        plot_layout = QVBoxLayout(
+            plot_container,
+        )
 
-        plot_layout.setContentsMargins(0, 0, 0, 0)
-        plot_layout.setSpacing(2)
+        plot_layout.setContentsMargins(
+            0,
+            0,
+            0,
+            0,
+        )
+
+        plot_layout.setSpacing(
+            2,
+        )
 
         #
         # Панель режимов курсора
@@ -76,50 +105,146 @@ class MainWindow(QMainWindow):
 
         mode_layout = QHBoxLayout()
 
-        self.cursor_radio = QRadioButton("Cursor")
-        self.marker_a_radio = QRadioButton("Marker A")
-        self.marker_b_radio = QRadioButton("Marker B")
+        self.cursor_radio = QRadioButton(
+            "Cursor",
+        )
 
-        self.cursor_radio.setChecked(True)
+        self.marker_a_radio = QRadioButton(
+            "Marker A",
+        )
 
-        self.cursor_mode_group = QButtonGroup(self)
+        self.marker_b_radio = QRadioButton(
+            "Marker B",
+        )
 
-        self.cursor_mode_group.addButton(self.cursor_radio)
-        self.cursor_mode_group.addButton(self.marker_a_radio)
-        self.cursor_mode_group.addButton(self.marker_b_radio)
+        self.cursor_radio.setChecked(
+            True,
+        )
 
-        mode_layout.addWidget(self.cursor_radio)
-        mode_layout.addWidget(self.marker_a_radio)
-        mode_layout.addWidget(self.marker_b_radio)
+        self.cursor_mode_group = QButtonGroup(
+            self,
+        )
+
+        self.cursor_mode_group.addButton(
+            self.cursor_radio,
+        )
+
+        self.cursor_mode_group.addButton(
+            self.marker_a_radio,
+        )
+
+        self.cursor_mode_group.addButton(
+            self.marker_b_radio,
+        )
+
+        mode_layout.addWidget(
+            self.cursor_radio,
+        )
+
+        mode_layout.addWidget(
+            self.marker_a_radio,
+        )
+
+        mode_layout.addWidget(
+            self.marker_b_radio,
+        )
+
         mode_layout.addStretch()
 
-        plot_layout.addLayout(mode_layout)
-        plot_layout.addWidget(self.plot_area)
+        plot_layout.addLayout(
+            mode_layout,
+        )
+
+        plot_layout.addWidget(
+            self.plot_area,
+        )
 
         #
         # Правая панель
         #
 
+        right_panel = QWidget()
+
+        right_layout = QVBoxLayout(
+            right_panel,
+        )
+
+        right_layout.setContentsMargins(
+            0,
+            0,
+            0,
+            0,
+        )
+
+        right_layout.setSpacing(
+            2,
+        )
+
         self.info_panel = InfoPanel()
 
+        self.measurements_panel = MeasurementsPanel()
+
+        right_layout.addWidget(
+            self.info_panel,
+            1,
+        )
+
+        right_layout.addWidget(
+            self.measurements_panel,
+            2,
+        )
+
         #
-        # Размещаем всё в splitter
+        # Splitter
         #
 
-        splitter.addWidget(self.channel_tree)
-        splitter.addWidget(plot_container)
-        splitter.addWidget(self.info_panel)
+        splitter.addWidget(
+            self.channel_tree,
+        )
 
-        splitter.setStretchFactor(0, 0)
-        splitter.setStretchFactor(1, 1)
-        splitter.setStretchFactor(2, 0)
+        splitter.addWidget(
+            plot_container,
+        )
 
-        self.setStatusBar(QStatusBar())
+        splitter.addWidget(
+            right_panel,
+        )
+
+        splitter.setStretchFactor(
+            0,
+            0,
+        )
+
+        splitter.setStretchFactor(
+            1,
+            1,
+        )
+
+        splitter.setStretchFactor(
+            2,
+            0,
+        )
+
+        splitter.setSizes(
+            [
+                260,
+                1050,
+                420,
+            ]
+        )
+
+        self.setStatusBar(
+            QStatusBar(),
+        )
 
     def set_session(self, session):
 
         self.session = session
 
-        self.channel_tree.set_channels(session.channels)
+        self.channel_tree.set_channels(
+            session.channels,
+        )
 
-        self.info_panel.set_channels(session.channels)
+        self.info_panel.set_channels(
+            session.channels,
+        )

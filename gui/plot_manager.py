@@ -2,12 +2,13 @@ from PySide6.QtCore import QObject, Signal
 
 from gui.plot_widget import PlotWidget
 from models.cursor_mode import CursorMode
+from models.measurement import Measurement
 
 
 class PlotManager(QObject):
     plot_closed = Signal(str)
     cursor_moved = Signal(int)
-    marker_changed = Signal()
+    marker_changed = Signal(list)
 
     def __init__(self, plot_area):
         super().__init__()
@@ -16,6 +17,13 @@ class PlotManager(QObject):
         self.plots = {}
 
         self.cursor_mode = CursorMode.CURSOR
+        self.cursor_index = -1
+
+        self.marker_a_index = -1
+        self.marker_b_index = -1
+        self.timestamps = None
+        self.session = None
+        self.measurements = []
 
     def set_cursor_mode(self, mode):
 
@@ -25,6 +33,8 @@ class PlotManager(QObject):
 
         if channel.name in self.plots:
             return self.plots[channel.name]
+
+        self.timestamps = timestamps
 
         plot = PlotWidget()
 
@@ -37,6 +47,25 @@ class PlotManager(QObject):
             timestamps,
             channel,
         )
+
+        #
+        # Восстановить состояние курсоров
+        #
+
+        if self.cursor_index >= 0:
+            plot.set_cursor(
+                self.cursor_index,
+            )
+
+        if self.marker_a_index >= 0:
+            plot.set_marker_a(
+                self.marker_a_index,
+            )
+
+        if self.marker_b_index >= 0:
+            plot.set_marker_b(
+                self.marker_b_index,
+            )
 
         self.plot_area.add_plot(plot)
 
@@ -73,6 +102,8 @@ class PlotManager(QObject):
 
     def on_cursor_moved(self, source_plot, index):
 
+        self.cursor_index = index
+
         for plot in self.plots.values():
             plot.set_cursor(index)
 
@@ -101,11 +132,68 @@ class PlotManager(QObject):
                 return
 
             case CursorMode.MARKER_A:
+                self.marker_a_index = index
+
                 for plot in self.plots.values():
                     plot.set_marker_a(index)
 
             case CursorMode.MARKER_B:
+                self.marker_b_index = index
+
                 for plot in self.plots.values():
                     plot.set_marker_b(index)
 
-        self.marker_changed.emit()
+        if self.marker_a_index >= 0:
+            print(f"A = {self.marker_a_index}")
+
+        if self.marker_b_index >= 0:
+            print(f"B = {self.marker_b_index}")
+
+        if (
+            self.timestamps is not None
+            and self.session is not None
+            and self.marker_a_index >= 0
+            and self.marker_b_index >= 0
+        ):
+            print(f"ΔIndex = {abs(self.marker_b_index - self.marker_a_index)}")
+            self.marker_changed.emit(
+                self.measurements,
+            )
+
+            t1 = self.timestamps[self.marker_a_index]
+            t2 = self.timestamps[self.marker_b_index]
+
+            print(f"ΔTime = {abs(t2 - t1):.3f} s")
+
+            values_a = self.session.values_at(
+                self.marker_a_index,
+            )
+
+            values_b = self.session.values_at(
+                self.marker_b_index,
+            )
+
+            self.measurements.clear()
+
+            for name, value_a in values_a.items():
+                value_b = values_b.get(name)
+
+                delta = None
+
+                if isinstance(value_a, (int, float)) and isinstance(value_b, (int, float)):
+                    delta = value_b - value_a
+
+                self.measurements.append(
+                    Measurement(
+                        name=name,
+                        value_a=value_a,
+                        value_b=value_b,
+                        delta=delta,
+                    )
+                )
+
+            print(f"PlotManager -> Measurements: {len(self.measurements)}")
+
+            self.marker_changed.emit(
+                self.measurements,
+            )

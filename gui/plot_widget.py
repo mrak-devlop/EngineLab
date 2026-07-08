@@ -304,6 +304,8 @@ class PlotWidget(QFrame):
 
     def mouse_clicked(self, args):
 
+        print(f"mouse_clicked -> {self.channel.name}")
+
         event = args[0]
 
         if self.channel is None:
