@@ -6,6 +6,7 @@ from PySide6.QtWidgets import QFileDialog
 from gui.plot_manager import PlotManager
 from models.cursor_mode import CursorMode
 from parsers.nissan_datascan import NissanDataScanParser
+from parsers.parser_factory import ParserFactory
 
 
 class MainController:
@@ -49,21 +50,37 @@ class MainController:
             self.on_cursor_mode_changed,
         )
 
+        self.window.zoom_markers_button.clicked.connect(
+            self.zoom_to_markers,
+        )
+
+        self.window.reset_zoom_button.clicked.connect(
+            self.reset_zoom,
+        )
+
     def open_log(self):
 
         filename, _ = QFileDialog.getOpenFileName(
             self.window,
             "Открыть лог",
             ".",
-            "Log files (*.log);;All files (*.*)",
+            "*.log *.txt *.csv;;"
+            "Log files (*.log);;"
+            "Text files (*.txt);;"
+            "CSV files (*.csv);;"
+            "All files (*.*)",
         )
 
         if not filename:
             return
 
-        parser = NissanDataScanParser()
+        parser = ParserFactory.create(
+            Path(filename),
+        )
 
-        session = parser.parse(Path(filename))
+        session = parser.parse(
+            Path(filename),
+        )
 
         self.window.set_session(session)
 
@@ -132,10 +149,32 @@ class MainController:
             self.cursor_mode,
         )
 
-        print(f"Cursor mode: {self.cursor_mode.name}")
-
     def marker_changed(self, measurements):
 
         self.window.measurements_panel.set_measurements(
             measurements,
         )
+
+    def zoom_to_markers(self):
+
+        if self.plot_manager.marker_a_index < 0 or self.plot_manager.marker_b_index < 0:
+            return
+
+        timestamps = self.window.session.timestamps
+
+        x1 = timestamps[self.plot_manager.marker_a_index]
+        x2 = timestamps[self.plot_manager.marker_b_index]
+
+        left = min(x1, x2)
+        right = max(x1, x2)
+
+        padding = (right - left) * 0.03
+
+        self.plot_manager.zoom_to_range(
+            left - padding,
+            right + padding,
+        )
+
+    def reset_zoom(self):
+
+        self.plot_manager.reset_zoom()

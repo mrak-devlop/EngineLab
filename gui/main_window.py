@@ -5,6 +5,7 @@ from PySide6.QtWidgets import (
     QButtonGroup,
     QHBoxLayout,
     QMainWindow,
+    QPushButton,
     QRadioButton,
     QSplitter,
     QStatusBar,
@@ -23,7 +24,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("EngineLab")
-        self.resize(1600, 900)
+        self.resize(1500, 800)
 
         self.session = None
 
@@ -106,15 +107,15 @@ class MainWindow(QMainWindow):
         mode_layout = QHBoxLayout()
 
         self.cursor_radio = QRadioButton(
-            "Cursor",
+            "Курсор",
         )
 
         self.marker_a_radio = QRadioButton(
-            "Marker A",
+            "Точка A",
         )
 
         self.marker_b_radio = QRadioButton(
-            "Marker B",
+            "Точка B",
         )
 
         self.cursor_radio.setChecked(
@@ -148,6 +149,12 @@ class MainWindow(QMainWindow):
         mode_layout.addWidget(
             self.marker_b_radio,
         )
+
+        self.zoom_markers_button = QPushButton("Zoom A-B")
+        self.reset_zoom_button = QPushButton("Reset zoom")
+
+        mode_layout.addWidget(self.zoom_markers_button)
+        mode_layout.addWidget(self.reset_zoom_button)
 
         mode_layout.addStretch()
 

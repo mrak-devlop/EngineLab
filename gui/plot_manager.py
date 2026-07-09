@@ -143,22 +143,13 @@ class PlotManager(QObject):
                 for plot in self.plots.values():
                     plot.set_marker_b(index)
 
-        if self.marker_a_index >= 0:
-            print(f"A = {self.marker_a_index}")
-
-        if self.marker_b_index >= 0:
-            print(f"B = {self.marker_b_index}")
-
         if self.timestamps is not None and self.session is not None and self.marker_a_index >= 0:
-            print(f"ΔIndex = {abs(self.marker_b_index - self.marker_a_index)}")
             self.marker_changed.emit(
                 self.measurements,
             )
 
             t1 = self.timestamps[self.marker_a_index]
             t2 = self.timestamps[self.marker_b_index]
-
-            print(f"ΔTime = {abs(t2 - t1):.3f} s")
 
             values_a = self.session.values_at(
                 self.marker_a_index,
@@ -200,4 +191,30 @@ class PlotManager(QObject):
 
             self.marker_changed.emit(
                 self.measurements,
+            )
+
+    def zoom_to_range(
+        self,
+        left: float,
+        right: float,
+    ):
+
+        for plot in self.plots.values():
+            plot.set_x_range(
+                left,
+                right,
+            )
+
+    def reset_zoom(self):
+
+        if self.timestamps is None:
+            return
+
+        left = self.timestamps[0]
+        right = self.timestamps[-1]
+
+        for plot in self.plots.values():
+            plot.set_x_range(
+                left,
+                right,
             )

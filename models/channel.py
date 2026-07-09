@@ -1,14 +1,16 @@
-from dataclasses import dataclass, field
+from models.channel_info import ChannelInfo
 
 
-@dataclass(slots=True)
 class Channel:
-    name: str
+    def __init__(
+        self,
+        name,
+        values,
+        info: ChannelInfo | None = None,
+    ):
 
-    values: list
+        self.name = name
 
-    unit: str = ""
+        self.values = values
 
-    color: str = ""
-
-    visible: bool = True
+        self.info = info or ChannelInfo()
