@@ -59,6 +59,20 @@ class PlotWidget(QFrame):
 
         self.plot = pg.PlotWidget()
 
+        self.selection = pg.LinearRegionItem(
+            values=(0, 0),
+            orientation="vertical",
+            movable=False,
+            brush=pg.mkBrush(0, 120, 255, 40),
+            pen=pg.mkPen(None),
+        )
+
+        self.selection.setZValue(-100)
+
+        self.selection.hide()
+
+        self.plot.addItem(self.selection)
+
         self.curve = self.plot.plot(
             [],
             [],
@@ -369,3 +383,29 @@ class PlotWidget(QFrame):
             return index - 1
 
         return index
+
+    def set_region(
+        self,
+        index_a: int,
+        index_b: int,
+    ):
+
+        if self.channel is None or index_a < 0 or index_b < 0:
+            self.selection.hide()
+            return
+
+        x1 = self.timestamps[index_a]
+        x2 = self.timestamps[index_b]
+
+        self.selection.setRegion(
+            (
+                min(x1, x2),
+                max(x1, x2),
+            )
+        )
+
+        self.selection.show()
+
+    def get_x_range(self) -> tuple[float, float]:
+
+        return tuple(self.plot.getViewBox().viewRange()[0])

@@ -30,19 +30,43 @@ class PlotManager(QObject):
 
         self.cursor_mode = mode
 
-    def show_channel(self, timestamps, channel):
+    def show_channel(
+        self,
+        timestamps,
+        channel,
+    ):
 
         if channel.name in self.plots:
             return self.plots[channel.name]
 
         self.timestamps = timestamps
 
+        #
+        # Запоминаем текущий масштаб
+        #
+
+        current_range = None
+
+        if self.plots:
+            current_range = next(iter(self.plots.values())).get_x_range()
+
         plot = PlotWidget()
 
-        plot.closed.connect(self.on_plot_closed)
-        plot.cursor_moved.connect(self.on_cursor_moved)
-        plot.view_changed.connect(self.on_view_changed)
-        plot.clicked.connect(self.on_plot_clicked)
+        plot.closed.connect(
+            self.on_plot_closed,
+        )
+
+        plot.cursor_moved.connect(
+            self.on_cursor_moved,
+        )
+
+        plot.view_changed.connect(
+            self.on_view_changed,
+        )
+
+        plot.clicked.connect(
+            self.on_plot_clicked,
+        )
 
         plot.show_channel(
             timestamps,
@@ -50,7 +74,7 @@ class PlotManager(QObject):
         )
 
         #
-        # Восстановить состояние курсоров
+        # Восстановить курсор
         #
 
         if self.cursor_index >= 0:
@@ -58,17 +82,47 @@ class PlotManager(QObject):
                 self.cursor_index,
             )
 
+        #
+        # Marker A
+        #
+
         if self.marker_a_index >= 0:
             plot.set_marker_a(
                 self.marker_a_index,
             )
+
+        #
+        # Marker B
+        #
 
         if self.marker_b_index >= 0:
             plot.set_marker_b(
                 self.marker_b_index,
             )
 
-        self.plot_area.add_plot(plot)
+        #
+        # Выделение между маркерами
+        #
+
+        if self.marker_a_index >= 0 and self.marker_b_index >= 0:
+            plot.set_region(
+                self.marker_a_index,
+                self.marker_b_index,
+            )
+
+        #
+        # Восстановить масштаб
+        #
+
+        if current_range is not None:
+            plot.set_x_range(
+                current_range[0],
+                current_range[1],
+            )
+
+        self.plot_area.add_plot(
+            plot,
+        )
 
         self.plots[channel.name] = plot
 
@@ -137,12 +191,20 @@ class PlotManager(QObject):
 
                 for plot in self.plots.values():
                     plot.set_marker_a(index)
+                    plot.set_region(
+                        self.marker_a_index,
+                        self.marker_b_index,
+                    )
 
             case CursorMode.MARKER_B:
                 self.marker_b_index = index
 
                 for plot in self.plots.values():
                     plot.set_marker_b(index)
+                    plot.set_region(
+                        self.marker_a_index,
+                        self.marker_b_index,
+                    )
 
         if self.timestamps is not None and self.session is not None and self.marker_a_index >= 0:
             t1 = self.timestamps[self.marker_a_index]
