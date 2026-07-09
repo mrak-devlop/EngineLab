@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbb4bcbe-2085-4601-933b-38c8c8d29f0f" name="Changes" comment="job marker">
-      <change afterPath="$PROJECT_DIR$/gui/measurements_panel.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/measurement.py" afterDir="false" />
+    <list default="true" id="dbb4bcbe-2085-4601-933b-38c8c8d29f0f" name="Changes" comment="0.5.0">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/main_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/main_controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/main_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/measurements_panel.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/measurements_panel.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/plot_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/plot_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/plot_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/plot_widget.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +107,8 @@
       <workItem from="1783463930466" duration="400000" />
       <workItem from="1783464893651" duration="200000" />
       <workItem from="1783531896172" duration="7195000" />
-      <workItem from="1783540154076" duration="1407000" />
+      <workItem from="1783540154076" duration="4345000" />
+      <workItem from="1783581693749" duration="327000" />
     </task>
     <task id="LOCAL-00001" summary="v0.2.0">
       <option name="closed" value="true" />
@@ -192,7 +190,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783533927814</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="0.5.0">
+      <option name="closed" value="true" />
+      <created>1783541853137</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1783541853137</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -220,11 +226,12 @@
     <MESSAGE value="interface done" />
     <MESSAGE value="тех долг" />
     <MESSAGE value="job marker" />
-    <option name="LAST_COMMIT_MESSAGE" value="job marker" />
+    <MESSAGE value="0.5.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="0.5.0" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/EngineLab$session.coverage" NAME="session Coverage Results" MODIFIED="1783355649578" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
-    <SUITE FILE_PATH="coverage/EngineLab$main.coverage" NAME="main Coverage Results" MODIFIED="1783541364598" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/EngineLab$main.coverage" NAME="main Coverage Results" MODIFIED="1783544317173" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/EngineLab$main_controller.coverage" NAME="main_controller Coverage Results" MODIFIED="1783442304950" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers" />
     <SUITE FILE_PATH="coverage/EngineLab$marker.coverage" NAME="marker Coverage Results" MODIFIED="1783446900955" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
     <SUITE FILE_PATH="coverage/EngineLab$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1783379531822" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui" />

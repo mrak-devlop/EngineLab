@@ -1,25 +1,18 @@
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QHeaderView,
     QTableWidget,
     QTableWidgetItem,
-    QVBoxLayout,
-    QWidget,
 )
 
 from models.measurement import Measurement
 
 
-class MeasurementsPanel(QWidget):
+class MeasurementsPanel(QTableWidget):
     def __init__(self):
-        super().__init__()
+        super().__init__(0, 4)
 
-        layout = QVBoxLayout(self)
-
-        self.table = QTableWidget()
-
-        self.table.setColumnCount(4)
-
-        self.table.setHorizontalHeaderLabels(
+        self.setHorizontalHeaderLabels(
             [
                 "Channel",
                 "Marker A",
@@ -28,45 +21,82 @@ class MeasurementsPanel(QWidget):
             ]
         )
 
-        self.table.horizontalHeader().setStretchLastSection(True)
+        self.verticalHeader().hide()
 
-        self.table.horizontalHeader().setSectionResizeMode(
+        self.horizontalHeader().setStretchLastSection(True)
+
+        self.horizontalHeader().setSectionResizeMode(
             0,
             QHeaderView.Stretch,
         )
 
-        layout.addWidget(self.table)
+        self.setEditTriggers(
+            QTableWidget.NoEditTriggers,
+        )
+
+        self.setSelectionMode(
+            QTableWidget.NoSelection,
+        )
+
+        self.setFocusPolicy(
+            Qt.FocusPolicy.NoFocus,
+        )
+
+    @staticmethod
+    def format_value(value):
+
+        if value is None:
+            return ""
+
+        if isinstance(value, float):
+            return f"{value:.2f}"
+
+        return str(value)
 
     def set_measurements(
         self,
         measurements: list[Measurement],
     ):
 
-        self.table.setRowCount(
+        self.setRowCount(
             len(measurements),
         )
 
         for row, m in enumerate(measurements):
-            self.table.setItem(
+            self.setItem(
                 row,
                 0,
-                QTableWidgetItem(m.name),
+                QTableWidgetItem(
+                    m.name,
+                ),
             )
 
-            self.table.setItem(
+            self.setItem(
                 row,
                 1,
-                QTableWidgetItem(str(m.value_a)),
+                QTableWidgetItem(
+                    self.format_value(
+                        m.value_a,
+                    ),
+                ),
             )
 
-            self.table.setItem(
+            self.setItem(
                 row,
                 2,
-                QTableWidgetItem(str(m.value_b)),
+                QTableWidgetItem(
+                    self.format_value(
+                        m.value_b,
+                    ),
+                ),
             )
 
-            self.table.setItem(
+            self.setItem(
                 row,
                 3,
-                QTableWidgetItem(str(m.delta)),
+                QTableWidgetItem(
+                    self.format_value(
+                        m.delta,
+                    ),
+                ),
             )

@@ -163,39 +163,53 @@ class MainWindow(QMainWindow):
         # Правая панель
         #
 
-        right_panel = QWidget()
-
-        right_layout = QVBoxLayout(
-            right_panel,
-        )
-
-        right_layout.setContentsMargins(
-            0,
-            0,
-            0,
-            0,
-        )
-
-        right_layout.setSpacing(
-            2,
-        )
-
         self.info_panel = InfoPanel()
 
         self.measurements_panel = MeasurementsPanel()
 
-        right_layout.addWidget(
+        self.info_panel.setMinimumHeight(
+            180,
+        )
+
+        self.measurements_panel.setMinimumHeight(
+            180,
+        )
+
+        right_splitter = QSplitter(
+            Qt.Vertical,
+        )
+
+        right_splitter.addWidget(
             self.info_panel,
+        )
+
+        right_splitter.addWidget(
+            self.measurements_panel,
+        )
+
+        right_splitter.setStretchFactor(
+            0,
             1,
         )
 
-        right_layout.addWidget(
-            self.measurements_panel,
-            2,
+        right_splitter.setStretchFactor(
+            1,
+            1,
+        )
+
+        right_splitter.setSizes(
+            [
+                450,
+                450,
+            ]
+        )
+
+        right_splitter.setChildrenCollapsible(
+            False,
         )
 
         #
-        # Splitter
+        # Основной splitter
         #
 
         splitter.addWidget(
@@ -207,7 +221,7 @@ class MainWindow(QMainWindow):
         )
 
         splitter.addWidget(
-            right_panel,
+            right_splitter,
         )
 
         splitter.setStretchFactor(

@@ -149,12 +149,7 @@ class PlotManager(QObject):
         if self.marker_b_index >= 0:
             print(f"B = {self.marker_b_index}")
 
-        if (
-            self.timestamps is not None
-            and self.session is not None
-            and self.marker_a_index >= 0
-            and self.marker_b_index >= 0
-        ):
+        if self.timestamps is not None and self.session is not None and self.marker_a_index >= 0:
             print(f"ΔIndex = {abs(self.marker_b_index - self.marker_a_index)}")
             self.marker_changed.emit(
                 self.measurements,
@@ -169,6 +164,13 @@ class PlotManager(QObject):
                 self.marker_a_index,
             )
 
+            values_b = {}
+
+            if self.marker_b_index >= 0:
+                values_b = self.session.values_at(
+                    self.marker_b_index,
+                )
+
             values_b = self.session.values_at(
                 self.marker_b_index,
             )
@@ -180,7 +182,11 @@ class PlotManager(QObject):
 
                 delta = None
 
-                if isinstance(value_a, (int, float)) and isinstance(value_b, (int, float)):
+                if (
+                    self.marker_b_index >= 0
+                    and isinstance(value_a, (int, float))
+                    and isinstance(value_b, (int, float))
+                ):
                     delta = value_b - value_a
 
                 self.measurements.append(
@@ -191,8 +197,6 @@ class PlotManager(QObject):
                         delta=delta,
                     )
                 )
-
-            print(f"PlotManager -> Measurements: {len(self.measurements)}")
 
             self.marker_changed.emit(
                 self.measurements,
