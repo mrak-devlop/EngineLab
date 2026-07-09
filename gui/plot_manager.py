@@ -1,3 +1,4 @@
+import numpy as np
 from PySide6.QtCore import QObject, Signal
 
 from gui.plot_widget import PlotWidget
@@ -144,10 +145,6 @@ class PlotManager(QObject):
                     plot.set_marker_b(index)
 
         if self.timestamps is not None and self.session is not None and self.marker_a_index >= 0:
-            self.marker_changed.emit(
-                self.measurements,
-            )
-
             t1 = self.timestamps[self.marker_a_index]
             t2 = self.timestamps[self.marker_b_index]
 
@@ -162,7 +159,13 @@ class PlotManager(QObject):
                     self.marker_b_index,
                 )
 
-            values_b = self.session.values_at(
+            left = min(
+                self.marker_a_index,
+                self.marker_b_index,
+            )
+
+            right = max(
+                self.marker_a_index,
                 self.marker_b_index,
             )
 
@@ -172,13 +175,27 @@ class PlotManager(QObject):
                 value_b = values_b.get(name)
 
                 delta = None
+                minimum = None
+                maximum = None
 
                 if (
                     self.marker_b_index >= 0
-                    and isinstance(value_a, (int, float))
-                    and isinstance(value_b, (int, float))
+                    and isinstance(value_a, (int, float, np.integer, np.floating))
+                    and isinstance(value_b, (int, float, np.integer, np.floating))
                 ):
                     delta = value_b - value_a
+                    channel = self.session.channels.get(name)
+
+                    if channel is not None:
+                        values = channel.values[left : right + 1]
+
+                        try:
+                            if np.issubdtype(values.dtype, np.number):
+                                minimum = np.nanmin(values)
+                                maximum = np.nanmax(values)
+
+                        except Exception:
+                            pass
 
                 self.measurements.append(
                     Measurement(
@@ -186,6 +203,8 @@ class PlotManager(QObject):
                         value_a=value_a,
                         value_b=value_b,
                         delta=delta,
+                        minimum=minimum,
+                        maximum=maximum,
                     )
                 )
 

@@ -11,25 +11,58 @@ from models.measurement import Measurement
 
 class MeasurementsPanel(QTableWidget):
     def __init__(self):
-        super().__init__(0, 4)
+        super().__init__(0, 6)
 
         self.setHorizontalHeaderLabels(
             [
-                "Channel",
-                "Marker A",
-                "Marker B",
+                "Канал",
+                "Точка A",
+                "Точка B",
                 "Δ",
+                "Min",
+                "Max",
             ]
         )
 
         self.verticalHeader().hide()
 
-        self.horizontalHeader().setStretchLastSection(True)
-
         self.horizontalHeader().setSectionResizeMode(
             0,
             QHeaderView.Stretch,
         )
+
+        header = self.horizontalHeader()
+
+        header.setStretchLastSection(False)
+
+        #
+        # Первая колонка занимает всё оставшееся место
+        #
+
+        header.setSectionResizeMode(
+            0,
+            QHeaderView.Stretch,
+        )
+
+        #
+        # Остальные фиксированной ширины
+        #
+
+        for column in range(1, 6):
+            header.setSectionResizeMode(
+                column,
+                QHeaderView.Fixed,
+            )
+
+        #
+        # Ширина столбцов
+        #
+
+        self.setColumnWidth(1, 60)  # A
+        self.setColumnWidth(2, 60)  # B
+        self.setColumnWidth(3, 60)  # Δ
+        self.setColumnWidth(4, 60)  # Min
+        self.setColumnWidth(5, 60)  # Max
 
         self.setEditTriggers(
             QTableWidget.NoEditTriggers,
@@ -120,8 +153,7 @@ class MeasurementsPanel(QTableWidget):
 
             item = QTableWidgetItem(
                 self.format_value(
-                    m.delta,
-                    signed=True,
+                    m.value_b,
                 ),
             )
 
@@ -142,6 +174,7 @@ class MeasurementsPanel(QTableWidget):
             item = QTableWidgetItem(
                 self.format_value(
                     m.delta,
+                    signed=True,
                 ),
             )
 
@@ -150,23 +183,64 @@ class MeasurementsPanel(QTableWidget):
             )
 
             if m.delta is not None:
-                if m.delta > 0:
-                    item.setForeground(
-                        QColor(0, 170, 0),
-                    )
+                if isinstance(m.delta, (int, float)):
+                    if m.delta > 0:
+                        item.setForeground(
+                            QColor(0, 170, 0),
+                        )
 
-                elif m.delta < 0:
-                    item.setForeground(
-                        QColor(220, 0, 0),
-                    )
+                    elif m.delta < 0:
+                        item.setForeground(
+                            QColor(220, 0, 0),
+                        )
 
-                else:
-                    item.setForeground(
-                        QColor(120, 120, 120),
-                    )
+                    else:
+                        item.setForeground(
+                            QColor(120, 120, 120),
+                        )
 
             self.setItem(
                 row,
                 3,
+                item,
+            )
+
+            #
+            # Minimum
+            #
+
+            item = QTableWidgetItem(
+                self.format_value(
+                    m.minimum,
+                ),
+            )
+
+            item.setTextAlignment(
+                Qt.AlignVCenter | Qt.AlignRight,
+            )
+
+            self.setItem(
+                row,
+                4,
+                item,
+            )
+
+            #
+            # Maximum
+            #
+
+            item = QTableWidgetItem(
+                self.format_value(
+                    m.maximum,
+                ),
+            )
+
+            item.setTextAlignment(
+                Qt.AlignVCenter | Qt.AlignRight,
+            )
+
+            self.setItem(
+                row,
+                5,
                 item,
             )
