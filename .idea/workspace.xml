@@ -4,10 +4,16 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbb4bcbe-2085-4601-933b-38c8c8d29f0f" name="Changes" comment="min max">
+    <list default="true" id="dbb4bcbe-2085-4601-933b-38c8c8d29f0f" name="Changes" comment="ыудусе купшщт">
+      <change afterPath="$PROJECT_DIR$/kit.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/project.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/kit.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/resources.qrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/storage/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/plot_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/plot_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/plot_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/plot_widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ROADMAP" beforeDir="false" afterPath="$PROJECT_DIR$/ROADMAP" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/main_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,44 +49,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.main.executor": "Run",
-    "Python.main_controller.executor": "Run",
-    "Python.main_window.executor": "Run",
-    "Python.marker.executor": "Run",
-    "Python.measurement.executor": "Run",
-    "Python.measurements_panel.executor": "Run",
-    "Python.plot_manager.executor": "Run",
-    "Python.plot_widget.executor": "Run",
-    "Python.session.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/morok/PycharmProjects/EngineLab",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.sourceCode.Python",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Batch.run.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main_controller.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main_window.executor&quot;: &quot;Run&quot;,
+    &quot;Python.marker.executor&quot;: &quot;Run&quot;,
+    &quot;Python.measurement.executor&quot;: &quot;Run&quot;,
+    &quot;Python.measurements_panel.executor&quot;: &quot;Run&quot;,
+    &quot;Python.plot_manager.executor&quot;: &quot;Run&quot;,
+    &quot;Python.plot_widget.executor&quot;: &quot;Run&quot;,
+    &quot;Python.session.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/morok/PycharmProjects/EngineLab&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.Python&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\morok\PycharmProjects\EngineLab" />
+      <recent name="C:\Users\morok\PycharmProjects\EngineLab\resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\morok\PycharmProjects\EngineLab\gui\controllers" />
+      <recent name="C:\Users\morok\PycharmProjects\EngineLab\resources" />
       <recent name="C:\Users\morok\PycharmProjects\EngineLab\gui" />
+      <recent name="C:\Users\morok\PycharmProjects\EngineLab\gui\controllers" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -112,7 +121,12 @@
       <workItem from="1783540154076" duration="4345000" />
       <workItem from="1783581693749" duration="2225000" />
       <workItem from="1783613113535" duration="8755000" />
-      <workItem from="1783622204650" duration="9643000" />
+      <workItem from="1783622204650" duration="10800000" />
+      <workItem from="1783635744763" duration="1804000" />
+      <workItem from="1783669973646" duration="1371000" />
+      <workItem from="1783671456407" duration="445000" />
+      <workItem from="1783675754140" duration="1393000" />
+      <workItem from="1783677183663" duration="1287000" />
     </task>
     <task id="LOCAL-00001" summary="v0.2.0">
       <option name="closed" value="true" />
@@ -226,7 +240,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783631737908</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="ыудусе купшщт">
+      <option name="closed" value="true" />
+      <created>1783634662299</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1783634662299</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -258,17 +280,18 @@
     <MESSAGE value="0.5.1 panel fix" />
     <MESSAGE value="emanage log add" />
     <MESSAGE value="min max" />
-    <option name="LAST_COMMIT_MESSAGE" value="min max" />
+    <MESSAGE value="ыудусе купшщт" />
+    <option name="LAST_COMMIT_MESSAGE" value="ыудусе купшщт" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/EngineLab$session.coverage" NAME="session Coverage Results" MODIFIED="1783355649578" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
-    <SUITE FILE_PATH="coverage/EngineLab$main.coverage" NAME="main Coverage Results" MODIFIED="1783634534587" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/EngineLab$main.coverage" NAME="main Coverage Results" MODIFIED="1783676407159" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/EngineLab$main_controller.coverage" NAME="main_controller Coverage Results" MODIFIED="1783442304950" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers" />
     <SUITE FILE_PATH="coverage/EngineLab$marker.coverage" NAME="marker Coverage Results" MODIFIED="1783446900955" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
     <SUITE FILE_PATH="coverage/EngineLab$measurements_panel.coverage" NAME="measurements_panel Coverage Results" MODIFIED="1783628263449" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui" />
-    <SUITE FILE_PATH="coverage/EngineLab$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1783379531822" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui" />
     <SUITE FILE_PATH="coverage/EngineLab$plot_manager.coverage" NAME="plot_manager Coverage Results" MODIFIED="1783536958651" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui" />
     <SUITE FILE_PATH="coverage/EngineLab$measurement.coverage" NAME="measurement Coverage Results" MODIFIED="1783623263708" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
+    <SUITE FILE_PATH="coverage/EngineLab$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1783635132405" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui" />
     <SUITE FILE_PATH="coverage/EngineLab$plot_widget.coverage" NAME="plot_widget Coverage Results" MODIFIED="1783445621383" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui" />
   </component>
 </project>
