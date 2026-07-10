@@ -18,6 +18,7 @@ from gui.info_panel import InfoPanel
 from gui.measurements_panel import MeasurementsPanel
 from gui.plot_area import PlotArea
 from gui.project_panel import ProjectPanel
+from resources import resources
 
 
 class MainWindow(QMainWindow):
@@ -26,6 +27,7 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("EngineLab")
         self.resize(1500, 800)
+        self.setWindowIcon(QIcon(":/icons/appico.ico"))
 
         self.project = None
 

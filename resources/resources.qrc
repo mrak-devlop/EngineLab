@@ -1,6 +1,6 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
     <qresource prefix="icons">
-        <file alias="kit.png">kit.png</file>
+        <file alias="appico.ico">appico.ico</file>
     </qresource>
 </RCC>
