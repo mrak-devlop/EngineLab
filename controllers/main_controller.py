@@ -6,7 +6,6 @@ from PySide6.QtWidgets import QFileDialog
 from gui.plot_manager import PlotManager
 from models.cursor_mode import CursorMode
 from models.project import Project
-from parsers.nissan_datascan import NissanDataScanParser
 from parsers.parser_factory import ParserFactory
 
 
@@ -59,6 +58,10 @@ class MainController:
             self.reset_zoom,
         )
 
+        self.window.project_panel.current_changed.connect(
+            self.project_session_changed,
+        )
+
     def current_session(self):
 
         project = self.window.project
@@ -68,43 +71,71 @@ class MainController:
 
         return project.current_session
 
-    def open_log(self):
+    def load_session(self):
 
         filename, _ = QFileDialog.getOpenFileName(
             self.window,
             "Открыть лог",
             ".",
-            "*.log *.txt *.csv;;"
-            "Log files (*.log);;"
-            "Text files (*.txt);;"
-            "CSV files (*.csv);;"
-            "All files (*.*)",
+            "Log files (*.log *.txt *.csv);;All files (*.*)",
         )
 
         if not filename:
-            return
+            return None
 
         parser = ParserFactory.create(
             Path(filename),
         )
 
-        session = parser.parse(
+        return parser.parse(
             Path(filename),
         )
 
-        project = Project()
+    def open_log(self):
+
+        session = self.load_session()
+
+        if session is None:
+            return
+
+        project = self.window.project
+
+        #
+        # Если проекта ещё нет — создаём его
+        #
+
+        if project is None:
+            project = Project()
+
+        #
+        # Добавляем лог в проект
+        #
 
         project.add_session(
             session,
         )
 
-        self.window.set_project(
-            project,
-        )
+        #
+        # Первый открытый лог
+        #
 
-        self.plot_manager.session = session
+        if self.window.project is None:
+            self.window.set_project(
+                project,
+            )
 
-        self.plot_manager.clear()
+            self.plot_manager.session = session
+
+            self.plot_manager.clear()
+
+        #
+        # Последующие логи
+        #
+
+        else:
+            self.window.project_panel.set_project(
+                project,
+            )
 
     def channels_changed(self, item):
 
@@ -114,25 +145,29 @@ class MainController:
             return
 
         channel = item.data(0, Qt.UserRole)
+        print("channels_changed:", channel.name, item.checkState(0))
 
         if channel is None:
             return
 
         if item.checkState(0) == Qt.Checked:
+            session.opened_channels.add(
+                channel.name,
+            )
+
             self.plot_manager.show_channel(
                 session.timestamps,
                 channel,
             )
 
         else:
-            self.plot_manager.hide_channel(channel)
+            session.opened_channels.discard(
+                channel.name,
+            )
 
-    def plot_closed(self, channel_name: str):
-
-        self.window.channel_tree.set_channel_checked(
-            channel_name,
-            False,
-        )
+            self.plot_manager.hide_channel(
+                channel,
+            )
 
     def cursor_moved(self, index: int):
 
@@ -203,6 +238,87 @@ class MainController:
             right + padding,
         )
 
+    def plot_closed(
+        self,
+        channel_name: str,
+    ):
+
+        self.window.channel_tree.set_channel_checked(
+            channel_name,
+            False,
+        )
+
     def reset_zoom(self):
 
         self.plot_manager.reset_zoom()
+
+    def project_session_changed(
+        self,
+        index: int,
+    ):
+
+        project = self.window.project
+
+        if project is None:
+            return
+
+        project.set_current_session(
+            index,
+        )
+
+        session = project.current_session
+
+        if session is None:
+            return
+
+        #
+        # Очистить текущие графики
+        #
+
+        self.plot_manager.clear()
+
+        #
+        # Сообщить PlotManager о новой сессии
+        #
+
+        self.plot_manager.session = session
+        self.plot_manager.timestamps = session.timestamps
+        self.plot_manager.marker_a_index = session.marker_a.index
+        self.plot_manager.marker_b_index = session.marker_b.index
+
+        #
+        # Заполнить дерево каналов
+        #
+
+        self.window.channel_tree.set_channels(
+            session.channels,
+        )
+
+        #
+        # Восстановить открытые каналы
+        #
+
+        for channel_name in session.opened_channels:
+            self.window.channel_tree.set_channel_checked(
+                channel_name,
+                True,
+            )
+
+        #
+        # Обновить панель значений
+        #
+
+        self.window.info_panel.set_channels(
+            session.channels,
+        )
+
+        #
+        # Обновить правые панели
+        #
+
+        if session.cursor_index >= 0:
+            self.cursor_moved(
+                session.cursor_index,
+            )
+
+        self.plot_manager.update_measurements()

@@ -30,6 +30,46 @@ class PlotManager(QObject):
 
         self.cursor_mode = mode
 
+    def set_session(
+        self,
+        session,
+    ):
+
+        self.session = session
+
+        self.timestamps = session.timestamps
+
+        #
+        # Закрыть все текущие графики
+        #
+
+        self.clear()
+
+        #
+        # Сбросить курсор
+        #
+
+        self.cursor_index = -1
+
+        self.marker_a_index = -1
+
+        self.marker_b_index = -1
+
+        #
+        # Открыть сохранённые графики
+        #
+
+        for channel_name in session.opened_channels:
+            channel = session.channels.get(
+                channel_name,
+            )
+
+            if channel is not None:
+                self.show_channel(
+                    session.timestamps,
+                    channel,
+                )
+
     def show_channel(
         self,
         timestamps,
@@ -77,49 +117,74 @@ class PlotManager(QObject):
         # Восстановить курсор
         #
 
-        if self.cursor_index >= 0:
-            plot.set_cursor(
-                self.cursor_index,
-            )
+        if self.session is not None and self.session.cursor_index >= 0:
+            self.cursor_index = self.session.cursor_index
 
+            plot.set_cursor(
+                self.session.cursor_index,
+            )
         #
         # Marker A
         #
 
-        if self.marker_a_index >= 0:
+        if self.session is not None and self.session.marker_a.visible:
+            self.marker_a_index = self.session.marker_a.index
+
             plot.set_marker_a(
-                self.marker_a_index,
+                self.session.marker_a.index,
             )
 
         #
         # Marker B
         #
 
-        if self.marker_b_index >= 0:
+        if self.session is not None and self.session.marker_b.visible:
+            self.marker_b_index = self.session.marker_b.index
+
             plot.set_marker_b(
-                self.marker_b_index,
+                self.session.marker_b.index,
             )
 
         #
         # Выделение между маркерами
         #
 
-        if self.marker_a_index >= 0 and self.marker_b_index >= 0:
+        if (
+            self.session is not None
+            and self.session.marker_a.visible
+            and self.session.marker_b.visible
+        ):
             plot.set_region(
-                self.marker_a_index,
-                self.marker_b_index,
+                self.session.marker_a.index,
+                self.session.marker_b.index,
             )
-
         #
         # Восстановить масштаб
         #
 
         if current_range is not None:
+            #
+            # Есть уже открытые графики этой Session
+            #
+
             plot.set_x_range(
                 current_range[0],
                 current_range[1],
             )
 
+        elif (
+            self.session is not None
+            and self.session.zoom_left is not None
+            and self.session.zoom_right is not None
+        ):
+            #
+            # Первый график после переключения Session
+            #
+
+            plot.set_x_range(
+                self.session.zoom_left,
+                self.session.zoom_right,
+            )
         self.plot_area.add_plot(
             plot,
         )
@@ -159,6 +224,9 @@ class PlotManager(QObject):
 
         self.cursor_index = index
 
+        if self.session is not None:
+            self.session.cursor_index = index
+
         for plot in self.plots.values():
             plot.set_cursor(index)
 
@@ -180,6 +248,10 @@ class PlotManager(QObject):
                 x_max,
             )
 
+        if self.session is not None:
+            self.session.zoom_left = x_min
+            self.session.zoom_right = x_max
+
     def on_plot_clicked(self, source_plot, index):
 
         match self.cursor_mode:
@@ -188,6 +260,10 @@ class PlotManager(QObject):
 
             case CursorMode.MARKER_A:
                 self.marker_a_index = index
+
+                if self.session is not None:
+                    self.session.marker_a.index = index
+                    self.session.marker_a.visible = True
 
                 for plot in self.plots.values():
                     plot.set_marker_a(index)
@@ -199,6 +275,10 @@ class PlotManager(QObject):
             case CursorMode.MARKER_B:
                 self.marker_b_index = index
 
+                if self.session is not None:
+                    self.session.marker_b.index = index
+                    self.session.marker_b.visible = True
+
                 for plot in self.plots.values():
                     plot.set_marker_b(index)
                     plot.set_region(
@@ -206,79 +286,93 @@ class PlotManager(QObject):
                         self.marker_b_index,
                     )
 
-        if self.timestamps is not None and self.session is not None and self.marker_a_index >= 0:
-            t1 = self.timestamps[self.marker_a_index]
-            t2 = self.timestamps[self.marker_b_index]
+        self.update_measurements()
 
-            values_a = self.session.values_at(
-                self.marker_a_index,
-            )
+    def update_measurements(self):
 
-            values_b = {}
+        if self.timestamps is None or self.session is None or self.marker_a_index < 0:
+            return
 
-            if self.marker_b_index >= 0:
-                values_b = self.session.values_at(
-                    self.marker_b_index,
-                )
+        t1 = self.timestamps[self.marker_a_index]
+        t2 = self.timestamps[self.marker_b_index]
 
-            left = min(
-                self.marker_a_index,
+        values_a = self.session.values_at(
+            self.marker_a_index,
+        )
+
+        values_b = {}
+
+        if self.marker_b_index >= 0:
+            values_b = self.session.values_at(
                 self.marker_b_index,
             )
 
-            right = max(
-                self.marker_a_index,
-                self.marker_b_index,
-            )
+        left = min(
+            self.marker_a_index,
+            self.marker_b_index,
+        )
 
-            self.measurements.clear()
+        right = max(
+            self.marker_a_index,
+            self.marker_b_index,
+        )
 
-            for name, value_a in values_a.items():
-                value_b = values_b.get(name)
+        self.measurements.clear()
 
-                delta = None
-                minimum = None
-                maximum = None
+        for name, value_a in values_a.items():
+            value_b = values_b.get(name)
 
-                if (
-                    self.marker_b_index >= 0
-                    and isinstance(value_a, (int, float, np.integer, np.floating))
-                    and isinstance(value_b, (int, float, np.integer, np.floating))
-                ):
-                    delta = value_b - value_a
-                    channel = self.session.channels.get(name)
+            delta = None
+            minimum = None
+            maximum = None
 
-                    if channel is not None:
-                        values = channel.values[left : right + 1]
+            if (
+                self.marker_b_index >= 0
+                and isinstance(value_a, (int, float, np.integer, np.floating))
+                and isinstance(value_b, (int, float, np.integer, np.floating))
+            ):
+                delta = value_b - value_a
 
-                        try:
-                            if np.issubdtype(values.dtype, np.number):
-                                minimum = np.nanmin(values)
-                                maximum = np.nanmax(values)
+                channel = self.session.channels.get(name)
 
-                        except Exception:
-                            pass
+                if channel is not None:
+                    values = channel.values[left : right + 1]
 
-                self.measurements.append(
-                    Measurement(
-                        name=name,
-                        value_a=value_a,
-                        value_b=value_b,
-                        delta=delta,
-                        minimum=minimum,
-                        maximum=maximum,
-                    )
+                    try:
+                        if np.issubdtype(
+                            values.dtype,
+                            np.number,
+                        ):
+                            minimum = np.nanmin(values)
+                            maximum = np.nanmax(values)
+
+                    except Exception:
+                        pass
+
+            self.measurements.append(
+                Measurement(
+                    name=name,
+                    value_a=value_a,
+                    value_b=value_b,
+                    delta=delta,
+                    minimum=minimum,
+                    maximum=maximum,
                 )
-
-            self.marker_changed.emit(
-                self.measurements,
             )
+
+        self.marker_changed.emit(
+            self.measurements,
+        )
 
     def zoom_to_range(
         self,
         left: float,
         right: float,
     ):
+
+        if self.session is not None:
+            self.session.zoom_left = left
+            self.session.zoom_right = right
 
         for plot in self.plots.values():
             plot.set_x_range(

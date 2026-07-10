@@ -11,13 +11,31 @@ class Project:
         default_factory=list,
     )
 
+    current_index: int = 0
+
     @property
     def current_session(self) -> Session | None:
 
         if not self.sessions:
             return None
 
-        return self.sessions[0]
+        if self.current_index >= len(self.sessions):
+            return None
+
+        return self.sessions[self.current_index]
+
+    def set_current_session(
+        self,
+        index: int,
+    ):
+
+        if 0 <= index < len(self.sessions):
+            self.current_index = index
+
+    @property
+    def session_count(self) -> int:
+
+        return len(self.sessions)
 
     def add_session(
         self,

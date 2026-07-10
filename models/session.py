@@ -15,8 +15,12 @@ class Session:
 
     timestamps: NDArray[np.float64]
 
-    channels: dict[str, Channel] = field(default_factory=dict)
+    zoom_left: float | None = None
+    zoom_right: float | None = None
 
+    channels: dict[str, Channel] = field(default_factory=dict)
+    opened_channels: set[str] = field(default_factory=set)
+    cursor_index: int = -1
     marker_a: Marker = field(default_factory=Marker)
     marker_b: Marker = field(default_factory=Marker)
 

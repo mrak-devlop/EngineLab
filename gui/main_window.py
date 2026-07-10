@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (
     QRadioButton,
     QSplitter,
     QStatusBar,
+    QTabWidget,
     QVBoxLayout,
     QWidget,
 )
@@ -16,6 +17,7 @@ from gui.channel_tree import ChannelTree
 from gui.info_panel import InfoPanel
 from gui.measurements_panel import MeasurementsPanel
 from gui.plot_area import PlotArea
+from gui.project_panel import ProjectPanel
 
 
 class MainWindow(QMainWindow):
@@ -37,7 +39,7 @@ class MainWindow(QMainWindow):
         file_menu = menu.addMenu("Файл")
 
         self.open_action = QAction(
-            "Открыть лог...",
+            "Добавить лог...",
             self,
         )
 
@@ -74,7 +76,32 @@ class MainWindow(QMainWindow):
         # Левая панель
         #
 
+        left_panel = QSplitter(
+            Qt.Vertical,
+        )
+
         self.channel_tree = ChannelTree()
+
+        self.project_panel = ProjectPanel()
+
+        left_panel.addWidget(
+            self.channel_tree,
+        )
+
+        left_panel.addWidget(
+            self.project_panel,
+        )
+
+        #
+        # Начальное соотношение размеров
+        #
+
+        left_panel.setSizes(
+            [
+                500,
+                140,
+            ]
+        )
 
         #
         # Центральная панель
@@ -166,6 +193,26 @@ class MainWindow(QMainWindow):
         )
 
         #
+        # Вкладки
+        #
+
+        self.center_tabs = QTabWidget()
+
+        self.log_view_page = plot_container
+
+        self.compare_page = QWidget()
+
+        self.center_tabs.addTab(
+            self.log_view_page,
+            "Просмотр",
+        )
+
+        self.center_tabs.addTab(
+            self.compare_page,
+            "Сравнение",
+        )
+
+        #
         # Правая панель
         #
 
@@ -219,11 +266,11 @@ class MainWindow(QMainWindow):
         #
 
         splitter.addWidget(
-            self.channel_tree,
+            left_panel,
         )
 
         splitter.addWidget(
-            plot_container,
+            self.center_tabs,
         )
 
         splitter.addWidget(
@@ -271,4 +318,8 @@ class MainWindow(QMainWindow):
 
         self.info_panel.set_channels(
             session.channels,
+        )
+
+        self.project_panel.set_project(
+            project,
         )
