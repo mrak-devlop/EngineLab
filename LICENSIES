@@ -1,0 +1,42 @@
+Business Source License 1.1
+
+Parameters
+
+Licensor:                 Isaev Dmitiy Aleksandrovich
+Licensed Work:            EngineLab
+Change Date:              2029-07-10
+Change License:           GNU General Public License v3.0
+Additional Use Grant:     None
+
+---------------------------------------------------------------------------------------
+
+Terms
+
+Copyright © <Текущий год> <Имя автора или Название компании>. All rights reserved.
+
+"Business Source License" is a trademark of MariaDB Corporation Ab.
+
+Redistribution and use of this software and associated documentation files (the
+"Software"), with or without modification, are permitted provided that the
+following conditions are met:
+
+1. You may usage the Software for any Non-Commercial purpose. "Non-Commercial"
+means not intended for or directed towards commercial advantage or monetary
+compensation.
+
+2. You may use the Software for internal evaluation and development purposes.
+
+3. Your right to use the Software under this License is subject to the Change Date
+and Change License specifications above. On the Change Date, or upon the occurrence
+of the specified event, the Licensor grants you the rights to use the Software
+under the terms of the Change License.
+
+4. You must include this License text and copyright notice in all copies or
+substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

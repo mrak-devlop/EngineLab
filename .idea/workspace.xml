@@ -4,16 +4,9 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbb4bcbe-2085-4601-933b-38c8c8d29f0f" name="Changes" comment="ыудусе купшщт">
-      <change afterPath="$PROJECT_DIR$/kit.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/project.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/kit.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/resources.qrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/run.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/storage/__init__.py" afterDir="false" />
+    <list default="true" id="dbb4bcbe-2085-4601-933b-38c8c8d29f0f" name="Changes" comment="initial">
+      <change afterPath="$PROJECT_DIR$/LICENSIES" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ROADMAP" beforeDir="false" afterPath="$PROJECT_DIR$/ROADMAP" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/main_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +27,18 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "mrak-devlop"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/mrak-devlop/EngineLab",
+    "accountId": "2d473b09-cee1-45a5-b427-9c28d104a4d7"
+  }
+}]]></component>
   <component name="OptimizeOnSaveOptions">
     <option name="myRunOnSave" value="true" />
   </component>
@@ -126,7 +131,7 @@
       <workItem from="1783669973646" duration="1371000" />
       <workItem from="1783671456407" duration="445000" />
       <workItem from="1783675754140" duration="1393000" />
-      <workItem from="1783677183663" duration="1287000" />
+      <workItem from="1783677183663" duration="2680000" />
     </task>
     <task id="LOCAL-00001" summary="v0.2.0">
       <option name="closed" value="true" />
@@ -248,7 +253,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783634662299</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="initial">
+      <option name="closed" value="true" />
+      <created>1783678690599</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1783678690599</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -281,7 +294,8 @@
     <MESSAGE value="emanage log add" />
     <MESSAGE value="min max" />
     <MESSAGE value="ыудусе купшщт" />
-    <option name="LAST_COMMIT_MESSAGE" value="ыудусе купшщт" />
+    <MESSAGE value="initial" />
+    <option name="LAST_COMMIT_MESSAGE" value="initial" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/EngineLab$session.coverage" NAME="session Coverage Results" MODIFIED="1783355649578" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
