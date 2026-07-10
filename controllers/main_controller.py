@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QFileDialog
 
 from gui.plot_manager import PlotManager
 from models.cursor_mode import CursorMode
+from models.project import Project
 from parsers.nissan_datascan import NissanDataScanParser
 from parsers.parser_factory import ParserFactory
 
@@ -58,6 +59,15 @@ class MainController:
             self.reset_zoom,
         )
 
+    def current_session(self):
+
+        project = self.window.project
+
+        if project is None:
+            return None
+
+        return project.current_session
+
     def open_log(self):
 
         filename, _ = QFileDialog.getOpenFileName(
@@ -82,7 +92,15 @@ class MainController:
             Path(filename),
         )
 
-        self.window.set_session(session)
+        project = Project()
+
+        project.add_session(
+            session,
+        )
+
+        self.window.set_project(
+            project,
+        )
 
         self.plot_manager.session = session
 
@@ -90,7 +108,9 @@ class MainController:
 
     def channels_changed(self, item):
 
-        if self.window.session is None:
+        session = self.current_session()
+
+        if session is None:
             return
 
         channel = item.data(0, Qt.UserRole)
@@ -100,7 +120,7 @@ class MainController:
 
         if item.checkState(0) == Qt.Checked:
             self.plot_manager.show_channel(
-                self.window.session.timestamps,
+                session.timestamps,
                 channel,
             )
 
@@ -121,7 +141,10 @@ class MainController:
 
         self.current_index = index
 
-        session = self.window.session
+        if self.window.project is None:
+            return
+
+        session = self.current_session()
 
         if session is None:
             return
@@ -160,7 +183,12 @@ class MainController:
         if self.plot_manager.marker_a_index < 0 or self.plot_manager.marker_b_index < 0:
             return
 
-        timestamps = self.window.session.timestamps
+        session = self.current_session()
+
+        if session is None:
+            return
+
+        timestamps = session.timestamps
 
         x1 = timestamps[self.plot_manager.marker_a_index]
         x2 = timestamps[self.plot_manager.marker_b_index]

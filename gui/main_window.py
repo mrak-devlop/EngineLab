@@ -25,7 +25,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("EngineLab")
         self.resize(1500, 800)
 
-        self.session = None
+        self.project = None
 
         self.create_menu()
         self.create_ui()
@@ -257,9 +257,13 @@ class MainWindow(QMainWindow):
             QStatusBar(),
         )
 
-    def set_session(self, session):
+    def set_project(
+        self,
+        project,
+    ):
 
-        self.session = session
+        self.project = project
+        session = project.current_session
 
         self.channel_tree.set_channels(
             session.channels,
