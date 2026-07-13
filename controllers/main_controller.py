@@ -41,6 +41,9 @@ class MainController:
         self.plot_manager.marker_changed.connect(
             self.marker_changed,
         )
+        self.plot_manager.marker_placed.connect(
+            self.marker_placed,
+        )
 
         self.current_index = -1
 
@@ -195,16 +198,19 @@ class MainController:
     def on_cursor_mode_changed(self, button):
 
         if button is self.window.cursor_radio:
-            self.cursor_mode = CursorMode.CURSOR
+            mode = CursorMode.CURSOR
 
         elif button is self.window.marker_a_radio:
-            self.cursor_mode = CursorMode.MARKER_A
+            mode = CursorMode.MARKER_A
 
         elif button is self.window.marker_b_radio:
-            self.cursor_mode = CursorMode.MARKER_B
+            mode = CursorMode.MARKER_B
 
-        self.plot_manager.set_cursor_mode(
-            self.cursor_mode,
+        else:
+            return
+
+        self.change_cursor_mode(
+            mode,
         )
 
     def marker_changed(self, measurements):
@@ -322,3 +328,56 @@ class MainController:
             )
 
         self.plot_manager.update_measurements()
+
+    def marker_placed(
+        self,
+        marker: CursorMode,
+    ):
+
+        match marker:
+            case CursorMode.MARKER_A:
+                self.change_cursor_mode(
+                    CursorMode.MARKER_B,
+                )
+
+            case CursorMode.MARKER_B:
+                self.change_cursor_mode(
+                    CursorMode.CURSOR,
+                )
+
+    def change_cursor_mode(
+        self,
+        mode: CursorMode,
+    ):
+
+        self.cursor_mode = mode
+
+        #
+        # Синхронизируем RadioButton
+        #
+
+        self.window.cursor_radio.blockSignals(True)
+        self.window.marker_a_radio.blockSignals(True)
+        self.window.marker_b_radio.blockSignals(True)
+
+        match mode:
+            case CursorMode.CURSOR:
+                self.window.cursor_radio.setChecked(True)
+
+            case CursorMode.MARKER_A:
+                self.window.marker_a_radio.setChecked(True)
+
+            case CursorMode.MARKER_B:
+                self.window.marker_b_radio.setChecked(True)
+
+        self.window.cursor_radio.blockSignals(False)
+        self.window.marker_a_radio.blockSignals(False)
+        self.window.marker_b_radio.blockSignals(False)
+
+        #
+        # Сообщаем PlotManager
+        #
+
+        self.plot_manager.set_cursor_mode(
+            mode,
+        )

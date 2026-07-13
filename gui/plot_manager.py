@@ -10,6 +10,7 @@ class PlotManager(QObject):
     plot_closed = Signal(str)
     cursor_moved = Signal(int)
     marker_changed = Signal(list)
+    marker_placed = Signal(CursorMode)
 
     def __init__(self, plot_area):
         super().__init__()
@@ -271,7 +272,9 @@ class PlotManager(QObject):
                         self.marker_a_index,
                         self.marker_b_index,
                     )
-
+                self.marker_placed.emit(
+                    CursorMode.MARKER_A,
+                )
             case CursorMode.MARKER_B:
                 self.marker_b_index = index
 
@@ -285,7 +288,9 @@ class PlotManager(QObject):
                         self.marker_a_index,
                         self.marker_b_index,
                     )
-
+                self.marker_placed.emit(
+                    CursorMode.MARKER_B,
+                )
         self.update_measurements()
 
     def update_measurements(self):
